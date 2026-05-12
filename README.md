@@ -127,6 +127,3 @@ The final `process_invoice` function automates the following steps:
 
 ---
 
-## 🚀 Next Steps
-
-Following the completion of this extraction system, the project will move into **Document Classification** and **API Deployment** to finalize Project 2.
