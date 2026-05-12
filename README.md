@@ -1,25 +1,25 @@
-# Project 2: Information Extraction & Named Entity Recognition (Week 7)
+# Project 2: Advanced OCR & CNNs (Week 6)
 
-This project focuses on transforming unstructured text from documents like invoices and receipts into structured, queryable data. By building a complete extraction pipeline, the system integrates OCR (Optical Character Recognition), regular expressions (regex), and AI-powered Named Entity Recognition (NER).
+This project focuses on enhancing the accuracy of Optical Character Recognition (OCR) systems by applying advanced image preprocessing and implementing deep learning architectures. The goal is to handle real-world document challenges—such as camera angles and noise—and build a Convolutional Neural Network (CNN) from scratch for handwritten digit recognition.
 
 ---
 
 ## 🎯 Project Goals
 
 * 
-**Pattern Matching**: Extract specific identifiers such as dates, currency amounts, and invoice/order numbers using regex.
+**Perspective Correction**: Straighten skewed documents and fix photos taken at an angle.
 
 
 * 
-**Named Entity Recognition**: Utilize spaCy to identify people, organizations, and locations within documents.
+**Automatic Deskewing**: Implement algorithms to automatically detect and correct document rotation.
 
 
 * 
-**Data Visualization**: Use displaCy to create color-coded visualizations of extracted entities.
+**Noise Removal**: Use morphological operations (erosion, dilation, opening, closing) to clean low-quality scans.
 
 
 * 
-**Pipeline Integration**: Combine OCR, text preprocessing, and extraction into a unified system that outputs structured JSON data.
+**Deep Learning**: Build, train, and evaluate a CNN on the MNIST dataset to achieve over **98% accuracy**.
 
 
 
@@ -29,101 +29,92 @@ This project focuses on transforming unstructured text from documents like invoi
 
 ### 1. Library Installation
 
-To run the extraction pipeline, you must install **spaCy** and the **pytesseract** OCR engine.
+You will need several image processing and machine learning libraries:
 
 ```bash
-pip install spacy pytesseract
+pip install tensorflow keras opencv-python scikit-image imutils
 
 ```
 
-### 2. Language Model Download
 
-Download the small English model for spaCy. For higher accuracy, `en_core_web_md` or `en_core_web_lg` can be used.
 
-```bash
-python -m spacy download en_core_web_sm
+### 2. Dataset
 
-```
+The project utilizes the **MNIST dataset**, which contains 60,000 training samples and 10,000 test samples of handwritten digits.
 
 ---
 
 ## 📂 Pipeline Components
 
-### Part 1: Regular Expression Extraction
-
-The system uses custom regex patterns to handle various document formats:
+### Part 1: Advanced Preprocessing
 
 * 
-**Dates**: Supports MM/DD/YYYY, DD-MM-YYYY, and ISO formats.
+**Perspective Transform**: Uses a four-point transform to map an angled document back into a top-down, bird's-eye view.
 
 
 * 
-**Currency**: Handles symbols and commas (e.g., $1,250.50) and converts them to float values for processing.
+**Deskewing**: Calculates the rotation angle of a document based on its pixel coordinates and corrects it using an affine transformation.
 
 
 * 
-**Identifiers**: Extracts specific patterns like `INV-2024-001` or `ORDER-ABC123`.
+**Morphological Ops**: Cleans text by removing small noise (Opening) or filling small holes in characters (Closing).
 
 
 
-### Part 2: Named Entity Recognition (NER)
+### Part 2: CNN Architecture
 
-Using spaCy’s pre-trained models, the pipeline categorizes text into specific entity types:
-
-* 
-**PERSON**: Identifies names of individuals.
-
+The digit recognition model is built using a sequential architecture with the following layers:
 
 * 
-**ORG**: Identifies companies and organizations.
+**Convolutional Layers**: Two blocks (32 and 64 filters) to extract visual features using "relu" activation.
 
 
 * 
-**GPE/LOC**: Identifies geographical locations and cities.
+**Pooling Layers**: `MaxPooling2D` to reduce spatial dimensions and focus on key features.
 
 
 * 
-**MONEY/DATE**: Complements regex extraction for better coverage.
+**Regularization**: A **Dropout layer (0.5)** is used to prevent overfitting.
 
 
-
-### Part 3: Automated Invoice Processor
-
-The final `process_invoice` function automates the following steps:
-
-1. 
-**OCR**: Converts an image (e.g., `sample_invoice.jpg`) into raw text.
-
-
-2. 
-**Regex Extraction**: Pulls structured IDs and financial figures.
-
-
-3. 
-**NER Processing**: Extracts entities from the OCR text.
-
-
-4. 
-**Post-processing**: Identifies the "Total Amount" by finding the maximum value in the extracted amounts.
+* 
+**Output**: A Dense layer with **softmax** activation to classify the image into 10 categories (digits 0-9).
 
 
 
 ---
 
-## 📄 Deliverables
+## 📊 Training & Performance
+
+The model is trained using the **Adam optimizer** and **categorical crossentropy loss**.
 
 * 
-**week7_information_extraction.ipynb**: The main development notebook.
-
-
-* 
-**extracted_data.json**: The final structured output of the document processing.
+**Batch Size**: 128 
 
 
 * 
-**entities.html**: A visual representation of the NER results created via displaCy.
+**Epochs**: 10 
+
+
+* 
+**Target Accuracy**: 98%+ on the test set.
 
 
 
 ---
 
+## 📄 Deliverables Checklist
+
+* [ ] Perspective correction and deskewing functions.
+
+
+* [ ] Demonstration of all 4 morphological operations.
+
+
+* [ ] CNN model summary and training history plots.
+
+
+* [ ] 98%+ accuracy on test predictions.
+
+
+* [ ] Code hosted in `week6_advanced_ocr.ipynb`.
